@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Contact</title>
+    </head>
+    
+    <body>
+        <header>
+            
+             
+            <main>
+            
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>MS Wedding Fashion Packages</h1>
+            <div id="cart">
+                🛒 <span id="cart-count">0</span>
+            </div>
+            
+        
+
+        <nav>
+            <div class="logo">    
+            <ul class="nav-links">
+          <li><butto><a href="index.html">Home</a></butto></li>
+          <li><butto><a href="catalog-1.html">Catalog</a></butto></li>
+          <li><butto><a href="About-1.html">about</a></butto></li>
+          <li><butto><a href="Contact-1.html">Contact</a></butto></li>
+         
+             </ul>
+         </div>
+    </nav>
+</header>
+        <div class="packages">
+            <div class="package">
+                <h2>Silver Package</h2>
+                <ul>
+                    <li>Basic wedding gown rental</li>
+                    <li>Groom's suit rental</li>
+                    <li>Simple bouquet and boutonnière</li>
+                    <li>Basic hair and makeup for bride</li>
+                    <li>2-hour photography session</li>
+                </ul>
+                <p class="price">Price: Rs 6.000.000</p>
+                <button class="add-to-cart" data-price="6.000.000">Add to Cart</button>
+            </div>
+            <div class="package">
+                <h2>Gold Package</h2>
+                <ul>
+                    <li>Mid-range wedding gown rental or purchase</li>
+                    <li>Groom's suit rental or purchase</li>
+                    <li>Bridesmaids' dresses rental (up to 3)</li>
+                    <li>Custom bouquet and boutonnières</li>
+                    <li>Hair and makeup for bride and 1 bridesmaid</li>
+                    <li>4-hour photography session</li>
+                    <li>Basic wedding planning assistance</li>
+                </ul>
+                <p class="price">Price:Rs12.500.000 </p>
+                <button class="add-to-cart" data-price="12.500.000">Add to Cart</button>
+            </div>
+            <div class="package">
+                <h2>Platinum Package</h2>
+                <ul>
+                    <li>High-end wedding gown purchase</li>
+                    <li>Groom's custom suit</li>
+                    <li>Bridesmaids' dresses rental or purchase (up to 5)</li>
+                    <li>Custom floral arrangements for bridal party</li>
+                    <li>Hair and makeup for bride and 3 bridesmaids</li>
+                    <li>8-hour photography and videography</li>
+                    <li>Full wedding planning service</li>
+                    <li>Personalized wedding website</li>
+                </ul>
+                <p class="price">Price: Rs35.000.000</p>
+                <button class="add-to-cart" data-price="35.000.000">Add to Cart</button>
+            </div>
+            <div class="package">
+                <h2>Diamond Package</h2>
+                <ul>
+                    <li>Luxury designer wedding gown</li>
+                    <li>Groom's premium custom suit</li>
+                    <li>Bridesmaids' and groomsmen's attire (up to 8 each)</li>
+                    <li>Complete floral design for ceremony and reception</li>
+                    <li>Hair and makeup for entire bridal party</li>
+                    <li>Full-day photography and videography</li>
+                    <li>Premium wedding planning and coordination</li>
+                    <li>Custom invitations and stationery</li>
+                    <li>Honeymoon planning assistance</li>
+                </ul>
+                <p class="price">Price: Rs60.000.000</p>
+                <button class="add-to-cart" data-price="60.000.000">Add to Cart</button>
+            </div>
+        </div>
+    
+        <div id="cardModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Enter Card Details</h2>
+                <form id="cardForm">
+                    <input type="text" id="cardName" placeholder="Name on Card" required>
+                    <input type="text" id="cardNumber" placeholder="Card Number" required>
+                    <input type="text" id="cardExpiry" placeholder="MM/YY" required>
+                    <input type="text" id="cardCVC" placeholder="CVC" required>
+                    <button type="submit">Submit Payment</button>
+                </form>
+            </div>
+        </div>
+    
+        <script>
+            let cartCount = 0;
+            const modal = document.getElementById("cardModal");
+            const closeBtn = document.getElementsByClassName("close")[0];
+            let currentPrice = 0;
+    
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    currentPrice = this.getAttribute('data-price');
+                    modal.style.display = "block";
+                });
+            });
+    
+            closeBtn.onclick = function() {
+                modal.style.display = "none";
+            }
+    
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+    
+            document.getElementById('cardForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                cartCount++;
+                document.getElementById('cart-count').textContent = cartCount;
+                alert(`Payment of Rs${currentPrice} processed successfully!`);
+                modal.style.display = "none";
+            });
+        </script>
+    </body>
+    </html>
+
+                <style>
+                    .swich {
+                     background-color: #fff;
+                     padding: 30px;
+                     border-radius: 10px;
+                     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                     text-align: center;
+                  }
+                  
+                  nav {
+                     display: flex;
+                     justify-content: space-between;
+                     align-items: center;
+                     padding: 10px 0;
+                  }
+                  .logo {
+                     font-size: 25px;
+                     font-weight: bold;
+                     color: #361223;
+                  }
+                  
+                  .logo> h1{
+                     color: aqua;
+                  }
+
+                  .nav-links {
+                     list-style: none;
+                     display: flex;
+                  }
+                  
+                  .nav-links li {
+                     margin-left: 30px;
+                  }
+                  
+                  .nav-links a {
+                     text-decoration: none;
+                     color: #333;
+                     font-weight: bold;
+                     transition: color 0.3s;
+                  }
+                  
+                  .nav-links a:hover {
+                     color: #e74c3c;
+                  }
+                
+                  
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #50305c;
+        }
+
+        #cart {
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        #cart-count {
+            background-color: #50305c;
+            color: white;
+            border-radius: 50%;
+            padding: 0.2em 0.5em;
+            font-size: 0.7em;
+            position: relative;
+            top: -10px;
+        }
+
+        .packages {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .package {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 10px;
+            width: calc(25% - 20px);
+            transition: transform 0.3s ease;
+        }
+
+        .package:hover {
+            transform: translateY(-5px);
+        }
+
+        .package h2 {
+            color: #50305c;
+            border-bottom: 2px solid #50305c;
+            padding-bottom: 10px;
+        }
+
+        .package ul {
+            padding-left: 20px;
+        }
+
+        .package .price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #50305c;
+            margin-top: 15px;
+        }
+
+        .add-to-cart {
+            background-color: #50305c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: #3a2344;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-content input {
+            margin: 10px 0;
+            padding: 5px;
+        }
+
+        @media (max-width: 1024px) {
+            .package {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .package {
+                width: 100%;
+            }
+        }
