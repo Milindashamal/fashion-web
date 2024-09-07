@@ -1,114 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS Wedding Fashion - Login</title>
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-image: url('https://i.pinimg.com/originals/f1/10/11/f11011b7a4f702c45a19328748071fd8.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .login-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 350px;
+    }
+
+    h1 {
+        color: #d81b60;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+
+    button {
+        width: 100%;
+        background-color: #d81b60;
+        color: white;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #ad1457;
+    }
+
+    .forgot-password {
+        text-align: right;
+        margin-bottom: 1rem;
+    }
+
+    .forgot-password a {
+        color: #d81b60;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    p {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+    }
+
+    p a {
+        color: #d81b60;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 4px;
+        color: white;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .notification.show {
+        opacity: 1;
+    }
+
+    .notification.success {
+        background-color: #0a110a;
+    }
+
+    .notification.error {
+        background-color: #0c0404;
+    }
+
+    .error-message {
+        color: #f44336;
+        font-size: 0.8rem;
+        margin-top: -0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    </style>
+</head>
+<body>
     <div class="login-container">
         <h1>MS Wedding Fashion</h1>
         <form id="loginForm">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
-
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email">
+                <div id="emailError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password">
+                <div id="passwordError" class="error-message"></div>
+            </div>
             <div class="forgot-password">
                 <a href="#">Forgot Password?</a>
             </div>
-
             <button type="submit">Log In</button>
         </form>
-        <p class="signup-link">Don't have an account? <a href="login-1.html">Sign Up</a></p>
+        <p>Don't have an account? <a href="login-1.html">Sign Up</a></p>
     </div>
 
+    <div id="notification" class="notification"></div>
+
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
-            
-    
-            if (email === "milinda@gmail.com" && password === "mili123") {
-                alert("Login successful!");
-               
+    // Get form and input elements
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const notification = document.getElementById('notification');
+
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Function to validate email
+    function validateEmail(email) {
+        if (!email) {
+            return 'Email is required';
+        }
+        if (!emailRegex.test(email)) {
+            return 'Please enter a valid email address';
+        }
+        return '';
+    }
+
+    // Function to validate password
+    function validatePassword(password) {
+        if (!password) {
+            return 'Password is required';
+        }
+        if (password.length < 8) {
+            return 'Password must be at least 8 characters long';
+        }
+        if (!/[A-Z]/.test(password)) {
+            return 'Password must contain at least one uppercase letter';
+        }
+        if (!/[a-z]/.test(password)) {
+            return 'Password must contain at least one lowercase letter';
+        }
+        if (!/[0-9]/.test(password)) {
+            return 'Password must contain at least one number';
+        }
+        return '';
+    }
+
+    // Function to display error message
+    function showError(element, message) {
+        element.textContent = message;
+    }
+
+    // Function to clear error message
+    function clearError(element) {
+        element.textContent = '';
+    }
+
+    // Function to show notification
+    function showNotification(message, type) {
+        notification.textContent = message;
+        notification.className = `notification ${type} show`;
+        setTimeout(() => {
+            notification.className = 'notification';
+        }, 3000);
+    }
+
+    // Add input event listeners for real-time validation
+    emailInput.addEventListener('input', function() {
+        const error = validateEmail(this.value);
+        if (error) {
+            showError(emailError, error);
+        } else {
+            clearError(emailError);
+        }
+    });
+
+    passwordInput.addEventListener('input', function() {
+        const error = validatePassword(this.value);
+        if (error) {
+            showError(passwordError, error);
+        } else {
+            clearError(passwordError);
+        }
+    });
+
+    // Add form submit event listener
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const emailValue = emailInput.value.trim();
+        const passwordValue = passwordInput.value;
+
+        const emailValidationError = validateEmail(emailValue);
+        const passwordValidationError = validatePassword(passwordValue);
+
+        if (emailValidationError) {
+            showError(emailError, emailValidationError);
+        } else {
+            clearError(emailError);
+        }
+
+        if (passwordValidationError) {
+            showError(passwordError, passwordValidationError);
+        } else {
+            clearError(passwordError);
+        }
+
+        // If no errors, proceed with form submission
+        if (!emailValidationError && !passwordValidationError) {
+            // Here you would typically send the login data to a server
+            // For this example, we'll just check against hardcoded values
+            if (emailValue === "milinda@gmail.com" && passwordValue === "Mili123!") {
+                showNotification("Login successful!", "success");
+                // You might want to redirect the user or perform other actions here
             } else {
-                alert("Incorrect email or password. Please try again.");
+                showNotification("Incorrect email or password. Please try again.", "error");
             }
-        });
+        }
+    });
     </script>
 </body>
-</head>
 </html>
-
-<style>
-      body {
-            font-family: 'Arial', sans-serif;
-            background-image: url('https://i.pinimg.com/originals/f1/10/11/f11011b7a4f702c45a19328748071fd8.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .login-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 350px;
-        }
-        h1 {
-            color: #d81b60;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-        input {
-            padding: 0.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        button {
-            background-color: #d81b60;
-            color: white;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #ad1457;
-        }
-        .forgot-password {
-            text-align: right;
-            margin-bottom: 1rem;
-        }
-        .forgot-password a {
-            color: #d81b60;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        .signup-link {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-        }
-        .signup-link a {
-            color: #d81b60;
-            text-decoration: none;
-            font-weight: bold;

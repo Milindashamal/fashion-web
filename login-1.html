@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ms Wedding Fashion</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
 <body>
     <div class="container">
         <h1>Ms Wedding Fashion</h1>
@@ -9,57 +13,214 @@
         <form id="registrationForm">
             <div class="form-group">
                 <label for="fullname">Full Name:</label>
-                <input type="text" id="fullname" name="fullname" required>
+                <input type="text" id="fullname" name="fullname">
+                <div class="error" id="fullnameError"></div>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="text" id="email" name="email">
+                <div class="error" id="emailError"></div>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password">
+                <div class="error" id="passwordError"></div>
             </div>
             <div class="form-group">
                 <label for="weddingdate">Wedding Date:</label>
                 <input type="date" id="weddingdate" name="weddingdate">
+                <div class="error" id="weddingdateError"></div>
             </div>
             <div class="form-group">
                 <label for="servicetype">Service Type:</label>
                 <select id="servicetype" name="servicetype">
+                    <option value="">Select a service</option>
                     <option value="bridal">Bridal Gown</option>
                     <option value="bridesmaid">Bridesmaid Dresses</option>
                     <option value="groom">Groom Attire</option>
                     <option value="accessories">Accessories</option>
                 </select>
+                <div class="error" id="servicetypeError"></div>
             </div>
             <button type="submit">Register</button>
         </form>
     </div>
 
-    <script>
-        document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            var fullname = document.getElementById('fullname').value;
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
-            
-            // Simple validation
-            if (fullname && email && password) {
-                // In a real application, you would send this data to a server for processing
-                alert('Registration successful! Welcome, ' + fullname + '!');
-                this.reset(); // Reset the form
-            } else {
-                alert('Registration failed. Please fill in all required fields.');
+    <div class="notification" id="formNotification"></div>
+    <script src="script.js"></script> 
+</body>
+</html>
+
+
+<script>
+     document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registrationForm');
+            const notification = document.getElementById('formNotification');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (validateForm()) {
+                    // Simulate form submission
+                    showNotification('Registration successful!', 'success');
+                    form.reset();
+                } else {
+                    showNotification('Please correct the errors in the form.', 'error');
+                }
+            });
+
+            function validateForm() {
+                let isValid = true;
+                
+                // Validate Full Name
+                const fullname = document.getElementById('fullname');
+                if (fullname.value.trim() === '') {
+                    showError('fullnameError', 'Full name is required');
+                    isValid = false;
+                } else if (fullname.value.trim().length < 2) {
+                    showError('fullnameError', 'Full name must be at least 2 characters long');
+                    isValid = false;
+                } else {
+                    clearError('fullnameError');
+                }
+                
+                // Validate Email
+                const email = document.getElementById('email');
+                if (email.value.trim() === '') {
+                    showError('emailError', 'Email is required');
+                    isValid = false;
+                } else if (!isValidEmail(email.value)) {
+                    showError('emailError', 'Please enter a valid email address');
+                    isValid = false;
+                } else {
+                    clearError('emailError');
+                }
+                
+                // Validate Password
+                const password = document.getElementById('password');
+                if (password.value.length < 8) {
+                    showError('passwordError', 'Password must be at least 8 characters long');
+                    isValid = false;
+                } else if (!/[A-Z]/.test(password.value) || !/[a-z]/.test(password.value) || !/[0-9]/.test(password.value)) {
+                    showError('passwordError', 'Password must contain at least one uppercase letter, one lowercase letter, and one number');
+                    isValid = false;
+                } else {
+                    clearError('passwordError');
+                }
+                
+                // Validate Wedding Date
+                const weddingdate = document.getElementById('weddingdate');
+                if (weddingdate.value === '') {
+                    showError('weddingdateError', 'Wedding date is required');
+                    isValid = false;
+                } else if (new Date(weddingdate.value) <= new Date()) {
+                    showError('weddingdateError', 'Wedding date must be in the future');
+                    isValid = false;
+                } else {
+                    clearError('weddingdateError');
+                }
+                
+                // Validate Service Type
+                const servicetype = document.getElementById('servicetype');
+                if (servicetype.value === '') {
+                    showError('servicetypeError', 'Please select a service type');
+                    isValid = false;
+                } else {
+                    clearError('servicetypeError');
+                }
+                
+                return isValid;
+            }
+
+            function showError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                errorElement.textContent = message;
+            }
+
+            function clearError(elementId) {
+                const errorElement = document.getElementById(elementId);
+                errorElement.textContent = '';
+            }
+
+            function isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            function showNotification(message, type) {
+                notification.textContent = message;
+                notification.className = 'notification ' + type;
+                notification.style.display = 'block';
+                
+                // Hide notification after 5 seconds
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
+
+            // Add real-time validation
+            const inputs = form.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateField(this);
+                });
+            });
+
+            function validateField(field) {
+                switch(field.id) {
+                    case 'fullname':
+                        if (field.value.trim() === '') {
+                            showError('fullnameError', 'Full name is required');
+                        } else if (field.value.trim().length < 2) {
+                            showError('fullnameError', 'Full name must be at least 2 characters long');
+                        } else {
+                            clearError('fullnameError');
+                        }
+                        break;
+                    case 'email':
+                        if (field.value.trim() === '') {
+                            showError('emailError', 'Email is required');
+                        } else if (!isValidEmail(field.value)) {
+                            showError('emailError', 'Please enter a valid email address');
+                        } else {
+                            clearError('emailError');
+                        }
+                        break;
+                    case 'password':
+                        if (field.value.length < 8) {
+                            showError('passwordError', 'Password must be at least 8 characters long');
+                        } else if (!/[A-Z]/.test(field.value) || !/[a-z]/.test(field.value) || !/[0-9]/.test(field.value)) {
+                            showError('passwordError', 'Password must contain at least one uppercase letter, one lowercase letter, and one number');
+                        } else {
+                            clearError('passwordError');
+                        }
+                        break;
+                    case 'weddingdate':
+                        if (field.value === '') {
+                            showError('weddingdateError', 'Wedding date is required');
+                        } else if (new Date(field.value) <= new Date()) {
+                            showError('weddingdateError', 'Wedding date must be in the future');
+                        } else {
+                            clearError('weddingdateError');
+                        }
+                        break;
+                    case 'servicetype':
+                        if (field.value === '') {
+                            showError('servicetypeError', 'Please select a service type');
+                        } else {
+                            clearError('servicetypeError');
+                        }
+                        break;
+                }
             }
         });
     </script>
 </body>
-</head>
 </html>
+ </script>
 
-<style>
-     body {
+
+ <style> 
+body {
             font-family: Arial, sans-serif;
             background-image: url('https://yannidesignstudio.com/app/uploads/2019/08/wedding-ceremony-aisle-candalabras-mandap-hindu-henry-hotel-detroit-michigan-extravagant-luxurious-expensive-destination-venue.jpg');
             background-size: cover;
@@ -72,39 +233,50 @@
             justify-content: center;
             align-items: center;
         }
+
         .container {
             max-width: 400px;
-            width: 90%;
-            background-color: rgba(255, 255, 255, 0.9);
+            margin: 50px auto;
+            background-color: #fff;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         h1 {
             text-align: center;
             color: #ff69b4;
+            font-size: 24px;
             margin-bottom: 10px;
         }
+
         h2 {
             text-align: center;
             color: #333;
-            margin-top: 0;
+            font-size: 18px;
+            margin-bottom: 20px;
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             color: #666;
+            font-size: 16px;
         }
+
         input, select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
+            font-size: 16px;
         }
+
         button {
             width: 100%;
             padding: 10px;
@@ -114,8 +286,35 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s ease;
         }
+
         button:hover {
             background-color: #ff1493;
         }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            display: none;
+        }
+
+        .notification.success {
+            background-color: #4CAF50;
+        }
+
+        .notification.error {
+            background-color: #f44336;
+        }
+    </style>
